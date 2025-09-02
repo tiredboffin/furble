@@ -1,10 +1,9 @@
---- nimble.hack/ble_gap.c.orig	2025-08-28 07:47:53.776570301 +0930
-+++ nimble.hack/ble_gap.c	2025-08-28 07:47:53.776570301 +0930
-@@ -8151,15 +8151,30 @@
+--- ble_gap.c.orig	2025-07-26 00:05:09.302887900 +0100
++++ ble_gap.c	2025-09-01 22:28:53.997483800 +0100
+@@ -8109,15 +8109,30 @@
           * procedure.
           */
          rc = ble_store_read_peer_sec(&key_sec, &value_sec);
--        if (rc == 0 && value_sec.ltk_present) {
 +        if (rc != 0) {
 +              BLE_HS_LOG(INFO, "Not found: Peer record for address type %d value ", key_sec.peer_addr.type);
 +              BLE_HS_LOG_ADDR(INFO, key_sec.peer_addr.val);
@@ -18,7 +17,7 @@
 +              BLE_HS_LOG(INFO, "Found: Peer record for address type %d value ", key_sec.peer_addr.type);
 +              BLE_HS_LOG_ADDR(INFO, key_sec.peer_addr.val);
 + 	}
-+	if (rc == 0 && value_sec.ltk_present) {
+         if (rc == 0 && value_sec.ltk_present) {
              rc = ble_sm_enc_initiate(conn_handle, value_sec.key_size,
                                       value_sec.ltk, value_sec.ediv,
                                       value_sec.rand_num,
